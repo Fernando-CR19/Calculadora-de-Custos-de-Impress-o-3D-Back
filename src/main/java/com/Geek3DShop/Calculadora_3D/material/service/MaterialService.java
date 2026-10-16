@@ -1,0 +1,32 @@
+package com.Geek3DShop.Calculadora_3D.material.service;
+
+import com.Geek3DShop.Calculadora_3D.material.dto.CreateMaterialRequestDto;
+import com.Geek3DShop.Calculadora_3D.material.dto.MaterialResponseDto;
+import com.Geek3DShop.Calculadora_3D.material.entity.Material;
+import com.Geek3DShop.Calculadora_3D.material.repository.MaterialRepository;
+import com.Geek3DShop.Calculadora_3D.shared.exception.FeatureAlreadyExistsException;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MaterialService {
+
+    private final MaterialRepository materialRepository;
+
+    public MaterialService(MaterialRepository materialRepository) {
+        this.materialRepository = materialRepository;
+    }
+
+    @Transactional
+    public MaterialResponseDto createMaterial(CreateMaterialRequestDto materialDto) {
+        boolean alreadyExists = materialRepository.existsByNomeIgnoreCase(materialDto.nome());
+
+        if(alreadyExists) {
+            throw new FeatureAlreadyExistsException("Material: " + materialDto.nome() + " já está cadastrado");
+        }
+
+        var entity = new Material(materialDto.nome());
+        var entitySaved = materialRepository.save(entity);
+        return new MaterialResponseDto(entitySaved.getUuid(), entitySaved.getNome());
+    }
+}

@@ -16,6 +16,11 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class Material {
+
+    public Material(String nome) {
+        this.nome = nome;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
