@@ -1,6 +1,5 @@
 package com.Geek3DShop.Calculadora_3D.shared.exception;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
