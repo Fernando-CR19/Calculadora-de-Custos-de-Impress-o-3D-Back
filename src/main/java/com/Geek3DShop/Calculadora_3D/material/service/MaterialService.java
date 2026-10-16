@@ -8,6 +8,8 @@ import com.Geek3DShop.Calculadora_3D.shared.exception.FeatureAlreadyExistsExcept
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MaterialService {
 
@@ -28,5 +30,10 @@ public class MaterialService {
         var entity = new Material(materialDto.nome());
         var entitySaved = materialRepository.save(entity);
         return new MaterialResponseDto(entitySaved.getUuid(), entitySaved.getNome());
+    }
+
+    public List<MaterialResponseDto> listMaterials() {
+        var list = materialRepository.findByActiveTrueAndDeletedFalseOrderByNomeAsc();
+        return list.stream().map(material -> new MaterialResponseDto(material.getUuid(), material.getNome())).toList();
     }
 }
