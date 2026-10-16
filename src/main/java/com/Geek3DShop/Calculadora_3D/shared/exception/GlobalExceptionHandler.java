@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleFeatureAlreadyExists(FeatureAlreadyExistsException e, HttpServletRequest request) {
         ErrorResponse errorDetails = new ErrorResponse(
-            LocalDateTime.now(),
+            OffsetDateTime.now(),
             HttpStatus.CONFLICT.value(),
             "Conflito de dados",
             e.getMessage(),
