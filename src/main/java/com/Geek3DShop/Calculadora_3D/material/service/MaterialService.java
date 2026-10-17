@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,9 +25,21 @@ public class MaterialService {
 
     @Transactional
     public MaterialResponseDto createMaterial(CreateMaterialRequestDto materialDto) {
-        boolean alreadyExists = materialRepository.existsByNomeIgnoreCase(materialDto.nome());
+        Optional<Material> material = materialRepository.findByNomeIgnoreCase(materialDto.nome());
 
-        if (alreadyExists) {
+        if (material.isPresent()) {
+            Material materialFound = material.get();
+
+            if (materialFound.isDeleted()) {
+                materialFound.setNome(materialDto.nome());
+                materialFound.setActive(true);
+                materialFound.setDeleted(false);
+
+                materialRepository.save(materialFound);
+
+                return new MaterialResponseDto(materialFound.getUuid(), materialFound.getNome());
+            }
+
             throw new ResourceAlreadyExistsException("Material: " + materialDto.nome() + " já está cadastrado");
         }
 

@@ -13,9 +13,9 @@ public interface MaterialRepository extends JpaRepository<Material, Integer> {
 
     Optional<Material> findByUuidAndActiveTrueAndDeletedFalse(UUID uuid);
 
-    Optional<Material> findByNomeIgnoreCaseAndUuidNot(String nome, UUID uuid);
+    Optional<Material> findByNomeIgnoreCase(String nome);
 
-    boolean existsByNomeIgnoreCase(String nome);
+    Optional<Material> findByNomeIgnoreCaseAndUuidNot(String nome, UUID uuid);
 
     List<Material> findByActiveTrueAndDeletedFalseOrderByNomeAsc();
 }
