@@ -43,23 +43,32 @@ public class MaterialService {
 
     @Transactional
     public MaterialResponseDto updateMaterial(UUID uuid, UpdateMaterialDto materialDto) {
-        Optional<Material> material = materialRepository.findByUuidAndActiveTrueAndDeletedFalse(uuid);
+        Material material = materialRepository.findByUuidAndActiveTrueAndDeletedFalse(uuid).orElseThrow(
+                () -> new ResourceNotFoundException("Material: " + uuid + " não encontrado")
+        );
 
-        if (material.isEmpty()) {
-            throw new ResourceNotFoundException("Material: " + uuid + " não encontrado");
-        }
-
-        Optional<Material> entityAlreadySaved = materialRepository.findByNomeIgnoreCaseAndUuidNot(materialDto.nome(), uuid);
-
-        if (entityAlreadySaved.isPresent()) {
+        materialRepository.findByNomeIgnoreCaseAndUuidNot(materialDto.nome(), uuid).ifPresent(_ -> {
             throw new FeatureAlreadyExistsException("Material: " + materialDto.nome() + " já está cadastrado");
-        }
+        });
 
-        Material entity = material.get();
-        entity.setNome(materialDto.nome());
+        material.setNome(materialDto.nome());
 
-        materialRepository.save(entity);
+        materialRepository.save(material);
 
-        return new MaterialResponseDto(entity.getUuid(), entity.getNome());
+        return new MaterialResponseDto(material.getUuid(), material.getNome());
+    }
+
+    @Transactional
+    public void deleteMaterial(UUID uuid) {
+        Material material = materialRepository.findByUuidAndActiveTrueAndDeletedFalse(uuid).orElseThrow(
+                () -> new ResourceNotFoundException("Material: " + uuid + " não encontrado")
+        );
+
+        material.setActive(false);
+        material.setDeleted(true);
+
+        materialRepository.save(material);
+
+        // TODO: implementar lógica para fazer soft delete nos filamentos do material deletado
     }
 }
