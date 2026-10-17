@@ -11,7 +11,9 @@ import java.util.UUID;
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
 
-    Optional<Material> findByUuid(UUID uuid);
+    Optional<Material> findByUuidAndActiveTrueAndDeletedFalse(UUID uuid);
+
+    Optional<Material> findByNomeIgnoreCaseAndUuidNot(String nome, UUID uuid);
 
     boolean existsByNomeIgnoreCase(String nome);
 

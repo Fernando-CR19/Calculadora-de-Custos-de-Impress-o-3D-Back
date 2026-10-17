@@ -2,11 +2,13 @@ package com.Geek3DShop.Calculadora_3D.material.controller;
 
 import com.Geek3DShop.Calculadora_3D.material.dto.CreateMaterialRequestDto;
 import com.Geek3DShop.Calculadora_3D.material.dto.MaterialResponseDto;
+import com.Geek3DShop.Calculadora_3D.material.dto.UpdateMaterialDto;
 import com.Geek3DShop.Calculadora_3D.material.service.MaterialService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/materiais")
@@ -26,5 +28,10 @@ public class MaterialController {
     @GetMapping()
     public List<MaterialResponseDto> listMaterials() {
         return materialService.listMaterials();
+    }
+
+    @PatchMapping("/{uuid}")
+    public MaterialResponseDto updateMaterial(@PathVariable UUID uuid, @RequestBody UpdateMaterialDto materialDto) {
+        return materialService.updateMaterial(uuid, materialDto);
     }
 }

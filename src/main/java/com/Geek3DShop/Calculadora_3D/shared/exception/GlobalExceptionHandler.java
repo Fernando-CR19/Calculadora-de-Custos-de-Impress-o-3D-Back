@@ -14,13 +14,26 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleFeatureAlreadyExists(FeatureAlreadyExistsException e, HttpServletRequest request) {
         ErrorResponse errorDetails = new ErrorResponse(
-            OffsetDateTime.now(),
-            HttpStatus.CONFLICT.value(),
-            "Conflito de dados",
-            e.getMessage(),
-            request.getRequestURI()
+                OffsetDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Conflito de dados",
+                e.getMessage(),
+                request.getRequestURI()
         );
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDetails);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
+        ErrorResponse errorDetails = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Dado não encontrado",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDetails);
     }
 }
