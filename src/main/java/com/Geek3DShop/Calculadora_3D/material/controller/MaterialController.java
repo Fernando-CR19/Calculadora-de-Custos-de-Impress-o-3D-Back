@@ -34,4 +34,10 @@ public class MaterialController {
     public MaterialResponseDto updateMaterial(@PathVariable UUID uuid, @RequestBody UpdateMaterialDto materialDto) {
         return materialService.updateMaterial(uuid, materialDto);
     }
+
+    @DeleteMapping("/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMaterial(@PathVariable UUID uuid) {
+        materialService.deleteMaterial(uuid);
+    }
 }
