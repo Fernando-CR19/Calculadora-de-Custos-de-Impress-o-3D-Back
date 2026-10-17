@@ -5,7 +5,7 @@ import com.Geek3DShop.Calculadora_3D.material.dto.MaterialResponseDto;
 import com.Geek3DShop.Calculadora_3D.material.dto.UpdateMaterialDto;
 import com.Geek3DShop.Calculadora_3D.material.entity.Material;
 import com.Geek3DShop.Calculadora_3D.material.repository.MaterialRepository;
-import com.Geek3DShop.Calculadora_3D.shared.exception.FeatureAlreadyExistsException;
+import com.Geek3DShop.Calculadora_3D.shared.exception.ResourceAlreadyExistsException;
 import com.Geek3DShop.Calculadora_3D.shared.exception.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class MaterialService {
         boolean alreadyExists = materialRepository.existsByNomeIgnoreCase(materialDto.nome());
 
         if (alreadyExists) {
-            throw new FeatureAlreadyExistsException("Material: " + materialDto.nome() + " já está cadastrado");
+            throw new ResourceAlreadyExistsException("Material: " + materialDto.nome() + " já está cadastrado");
         }
 
         var entity = new Material(materialDto.nome());
@@ -47,7 +47,7 @@ public class MaterialService {
         );
 
         materialRepository.findByNomeIgnoreCaseAndUuidNot(materialDto.nome(), uuid).ifPresent(_ -> {
-            throw new FeatureAlreadyExistsException("Material: " + materialDto.nome() + " já está cadastrado");
+            throw new ResourceAlreadyExistsException("Material: " + materialDto.nome() + " já está cadastrado");
         });
 
         material.setNome(materialDto.nome());

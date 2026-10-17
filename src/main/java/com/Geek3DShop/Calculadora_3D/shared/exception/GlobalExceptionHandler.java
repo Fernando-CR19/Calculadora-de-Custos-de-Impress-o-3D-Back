@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleFeatureAlreadyExists(FeatureAlreadyExistsException e, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleFeatureAlreadyExists(ResourceAlreadyExistsException e, HttpServletRequest request) {
         ErrorResponse errorDetails = new ErrorResponse(
                 OffsetDateTime.now(),
                 HttpStatus.CONFLICT.value(),
