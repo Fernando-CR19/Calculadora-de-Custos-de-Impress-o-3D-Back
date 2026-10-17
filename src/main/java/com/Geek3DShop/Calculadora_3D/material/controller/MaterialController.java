@@ -4,6 +4,7 @@ import com.Geek3DShop.Calculadora_3D.material.dto.CreateMaterialRequestDto;
 import com.Geek3DShop.Calculadora_3D.material.dto.MaterialResponseDto;
 import com.Geek3DShop.Calculadora_3D.material.dto.UpdateMaterialDto;
 import com.Geek3DShop.Calculadora_3D.material.service.MaterialService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class MaterialController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public MaterialResponseDto createMaterial(@RequestBody CreateMaterialRequestDto materialRequestDto) {
+    public MaterialResponseDto createMaterial(@Valid @RequestBody CreateMaterialRequestDto materialRequestDto) {
         return materialService.createMaterial(materialRequestDto);
     }
 
@@ -31,7 +32,7 @@ public class MaterialController {
     }
 
     @PatchMapping("/{uuid}")
-    public MaterialResponseDto updateMaterial(@PathVariable UUID uuid, @RequestBody UpdateMaterialDto materialDto) {
+    public MaterialResponseDto updateMaterial(@PathVariable UUID uuid, @Valid @RequestBody UpdateMaterialDto materialDto) {
         return materialService.updateMaterial(uuid, materialDto);
     }
 
